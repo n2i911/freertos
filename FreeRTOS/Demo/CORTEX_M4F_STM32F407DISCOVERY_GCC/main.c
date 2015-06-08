@@ -20,6 +20,7 @@
 #include "GenQTest.h"
 #include "recmutex.h"
 #include "death.h"
+#include "serial.h"
 
 /* Hardware and starter kit includes. */
 #include "stm32f4_discovery.h"
@@ -32,6 +33,7 @@
 #define mainBLOCK_Q_PRIORITY                ( tskIDLE_PRIORITY + 2UL )
 #define mainCREATOR_TASK_PRIORITY           ( tskIDLE_PRIORITY + 3UL )
 #define mainFLOP_TASK_PRIORITY              ( tskIDLE_PRIORITY )
+#define mainCOM_TASK_PRIORITY               ( tskIDLE_PRIORITY + 2UL )
 
 static void prvSetupHardware( void )
 {
@@ -50,6 +52,33 @@ static void prvSetupHardware( void )
     STM_EVAL_PBInit( BUTTON_USER, BUTTON_MODE_EXTI );
 }
 
+static xComPortHandle xPort = NULL;
+void prvUSARTTask( void *pvParameters )
+{
+signed char cByteRxed;
+TickType_t xLastWakeTime;
+const TickType_t xFrequency = 30;
+
+#define comBUFFER_LEN   33
+    xSerialPortInitMinimal( 115200UL, comBUFFER_LEN );
+
+    // Initialise the xLastWakeTime variable with the current time.
+    xLastWakeTime = xTaskGetTickCount();
+
+    for( ;; )
+    {
+#define comRX_BLOCK_TIME    ( ( TickType_t ) 0xffff )
+#define comNO_BLOCK         ( ( TickType_t ) 0 )
+        if( xSerialGetChar( xPort, &cByteRxed, comRX_BLOCK_TIME ) )
+        {
+            if( xSerialPutChar( xPort, cByteRxed, comNO_BLOCK ) == pdPASS )
+            {
+            }
+        }
+        vTaskDelayUntil( &xLastWakeTime, xFrequency );
+    }
+}
+
 int main(void)
 {
     /* Configure the hardware ready to run the test. */
@@ -62,6 +91,10 @@ int main(void)
        more information. */
     vStartLEDFlashTasks( mainFLASH_TASK_PRIORITY );
 
+#define comSTACK_SIZE   128
+    /* Start COM Rx/TX echo tasks */
+    xTaskCreate( prvUSARTTask, "COMRxTx", comSTACK_SIZE, NULL, mainCOM_TASK_PRIORITY, ( TaskHandle_t * ) NULL );
+
     /* Start the scheduler. */
     vTaskStartScheduler();
 
@@ -70,7 +103,7 @@ int main(void)
        insufficient FreeRTOS heap memory available for the idle and/or timer tasks
        to be created.  See the memory management section on the FreeRTOS web site
        for more details. */
-    for ( ;; );
+    for( ;; );
 }
 
 void vApplicationTickHook( void )
