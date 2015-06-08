@@ -90,7 +90,8 @@ static const Led_TypeDef xLEDs[ partstMAX_LEDS ] = { LED5, LED6, LED3, LED4 };
 
 void vParTestInitialise( void )
 {
-	/* Initialise all four LEDs that are built onto the starter kit. */
+	/* Initialise all four LEDs that are built onto the starter kit.
+	 * LED5 for RED, LED6 for BLUE, LED3 for ORANGE, LED4 for GREEN */
 	STM_EVAL_LEDInit( LED5 );
 	STM_EVAL_LEDInit( LED6 );
 	STM_EVAL_LEDInit( LED3 );
