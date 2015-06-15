@@ -8,6 +8,7 @@ LINK = $(PREFIX)gcc
 SIZE = $(PREFIX)size
 OBJCOPY = $(PREFIX)objcopy
 OBJDUMP = $(PREFIX)objdump
+GDBTUI = $(PREFIX)gdb --tui
 FLASHER = st-flash
 DEBUGSERVER = st-util
 
@@ -81,10 +82,15 @@ flash:$(BIN)
 	$(FLASHER) $(FFLAGS)
 
 sym:$(BIN)
-	$(OBJDUMP) -t $(TGT).elf
+	$(OBJDUMP) -t $(TGT).elf > stm32f4.sym
 
 dump:$(BIN)
-	$(OBJDUMP) -D $(TGT).elf
+	$(OBJDUMP) -D $(TGT).elf > stm32f4.objdump
+
+debug:$(BIN)
+	$(GDBTUI) -ex "target remote localhost:3333" \
+		-ex "set remote hardware-breakpoint-limit 6" \
+		-ex "set remote hardware-watchpoint-limit 4" $(TGT).elf
 
 clean:
 	rm -f $(OBJS) $(LOBJS) $(TGT)* $(LIB)
