@@ -1,6 +1,7 @@
 /* Kernel includes. */
 #include "FreeRTOS.h"
 #include "queue.h"
+#include "semphr.h"
 
 /* Hardware and starter kit includes. */
 #include "stm32f4_discovery.h"
@@ -12,6 +13,7 @@
 /* The queue used to hold received characters. */
 static QueueHandle_t xRxedChars;
 static QueueHandle_t xCharsForTx;
+static SemaphoreHandle_t xSemaphore;
 
 xComPortHandle xSerialPortInitMinimal( unsigned long ulWantedBaud, unsigned portBASE_TYPE uxQueueLength )
 {
@@ -24,6 +26,9 @@ GPIO_InitTypeDef GPIO_InitStructure;
     /* Create the queues used to hold Rx/Tx characters. */
     xRxedChars = xQueueCreate( uxQueueLength, ( unsigned portBASE_TYPE ) sizeof( signed char ) );
     xCharsForTx = xQueueCreate( uxQueueLength + 1, ( unsigned portBASE_TYPE ) sizeof( signed char ) );
+
+    xSemaphore = xSemaphoreCreateBinary();
+    xSemaphoreGive( xSemaphore );
 
     /* If the queue/semaphore was created correctly then setup the serial port
      * hardware. */
@@ -101,11 +106,15 @@ signed char *pxNext;
     ( void ) pxPort;
 
     /* Send each character in the string, one at a time. */
-    pxNext = ( signed char * ) pcString;
-    while( *pxNext )
+    if( xSemaphoreTake( xSemaphore, ( TickType_t ) 0 ) == pdTRUE )
     {
-        xSerialPutChar( pxPort, *pxNext, 0 );
-        pxNext++;
+        pxNext = ( signed char * ) pcString;
+        while( *pxNext )
+        {
+            xSerialPutChar( pxPort, *pxNext, 0xffff );
+            pxNext++;
+        }
+        xSemaphoreGive( xSemaphore );
     }
 }
 
