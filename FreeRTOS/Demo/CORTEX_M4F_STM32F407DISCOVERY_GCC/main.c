@@ -50,6 +50,10 @@ static void prvSetupHardware( void )
      *     lowest interrupt priority, so it is ok to use the ISR safe FreeRTOS API
      *         from the button interrupt handler. */
     STM_EVAL_PBInit( BUTTON_USER, BUTTON_MODE_EXTI );
+
+    /* Setup the USART2 */
+#define comBUFFER_LEN   ( 64 + 1 )
+    xSerialPortInitMinimal( 115200UL, comBUFFER_LEN );
 }
 
 static xComPortHandle xPort = NULL;
@@ -58,9 +62,6 @@ void prvUSARTTask( void *pvParameters )
 signed char cByteRxed;
 TickType_t xLastWakeTime;
 const TickType_t xFrequency = 30;
-
-#define comBUFFER_LEN   33
-    xSerialPortInitMinimal( 115200UL, comBUFFER_LEN );
 
     // Initialise the xLastWakeTime variable with the current time.
     xLastWakeTime = xTaskGetTickCount();
