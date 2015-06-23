@@ -26,6 +26,9 @@
 #include "stm32f4_discovery.h"
 #include "stm32f4xx_conf.h"
 
+/* Application includes */
+#include "userbtn.h"
+
 /* Priorities for the demo application tasks. */
 #define mainFLASH_TASK_PRIORITY             ( tskIDLE_PRIORITY + 1UL )
 #define mainQUEUE_POLL_PRIORITY             ( tskIDLE_PRIORITY + 2UL )
@@ -54,6 +57,9 @@ static void prvSetupHardware( void )
     /* Setup the USART2 */
 #define comBUFFER_LEN   ( 64 + 1 )
     xSerialPortInitMinimal( 115200UL, comBUFFER_LEN );
+
+    /* Setup the User button function */
+    vUserBtnInit();
 }
 
 static xComPortHandle xPort = NULL;

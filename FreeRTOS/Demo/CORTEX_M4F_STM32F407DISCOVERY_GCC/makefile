@@ -24,7 +24,7 @@ LIB = lib$(TGT).a
 
 CFLAGS += -ggdb -g3 -std=gnu99 -Os -Wall -Wstrict-prototypes $(CPU_USAGE) $(FPU_USAGE) -mlittle-endian -mthumb -mthumb-interwork -nostartfiles
 CFLAGS += -ffunction-sections -fdata-sections -fno-builtin
-CFLAGS += -I. -I./board/ -I./lib/inc -I./lib/inc/core -I./lib/inc/peripherals
+CFLAGS += -I. -I./app/inc/ -I./board/ -I./lib/inc -I./lib/inc/core -I./lib/inc/peripherals
 CFLAGS += -I../../Source/include -I../../Source/portable/GCC/ARM_CM4F -I../Common/include
 ASFLAGS += -ggdb -g3 $(CPU_USAGE) $(FPU_USAGE) -mlittle-endian
 LINKFLAGS += -g3 -ggdb -std=gnu99 $(CPU_USAGE) $(FPU_USAGE) -mlittle-endian -static -lgcc -mthumb -mthumb-interwork -nostartfiles
@@ -49,6 +49,7 @@ CSRC = main.c \
 	   $(addprefix serial/, serial.c) \
 	   $(addprefix ../../Source/portable/GCC/ARM_CM4F/, port.c) \
 	   $(addprefix ../../Source/portable/MemMang/, heap_2.c) \
+	   $(addprefix app/src/, userbtn.c) \
 
 ASRC = $(addprefix startup/, startup_stm32f4xx.s)
 
