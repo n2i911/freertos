@@ -35,7 +35,7 @@ GPIO_InitTypeDef GPIO_InitStructure;
     if( ( xRxedChars != 0) && ( xCharsForTx != 0) )
     {
         /* Enable peripheral and GPIOA clock for USART2 */
-        RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2 | RCC_AHB1Periph_GPIOA, ENABLE);
+        RCC_AHB1PeriphClockCmd( RCC_AHB1Periph_GPIOA, ENABLE );
 
         /* GPIOA Configuration:  USART2 TX on PA2 */
         GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3;
@@ -53,6 +53,8 @@ GPIO_InitTypeDef GPIO_InitStructure;
          */
         GPIO_PinAFConfig( GPIOA, GPIO_PinSource2, GPIO_AF_USART2 );
         GPIO_PinAFConfig( GPIOA, GPIO_PinSource3, GPIO_AF_USART2 );
+
+        RCC_APB1PeriphClockCmd( RCC_APB1Periph_USART2, ENABLE );
 
         USART_InitStructure.USART_BaudRate = ulWantedBaud;
         USART_InitStructure.USART_WordLength = USART_WordLength_8b;
