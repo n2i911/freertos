@@ -29,6 +29,7 @@
 /* Application includes */
 #include "userbtn.h"
 #include "i2c.h"
+#include "shell.h"
 
 /* Priorities for the demo application tasks. */
 #define mainFLASH_TASK_PRIORITY             ( tskIDLE_PRIORITY + 1UL )
@@ -101,6 +102,9 @@ int main(void)
        0 (at the top of this file).  See the comments at the top of this file for
        more information. */
     vStartLEDFlashTasks( mainFLASH_TASK_PRIORITY );
+
+    /* Start shell application. Would handle and response what user type */
+    vStartShellTasks( mainCOM_TASK_PRIORITY );
 
 #define comSTACK_SIZE   128
 #if 0

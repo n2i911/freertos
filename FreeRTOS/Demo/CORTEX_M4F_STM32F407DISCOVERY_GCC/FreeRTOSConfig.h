@@ -127,6 +127,9 @@ to exclude the API function. */
 /* Set the number of leds for ParTest */
 #define configMINIMAL_MAX_LEDS		    ( 4 )
 
+/* Set the size of console buffer in bytes  */
+#define configCONSOLE_BUFFER_SIZE	    ( 32 )
+
 /* Cortex-M specific definitions. */
 #ifdef __NVIC_PRIO_BITS
 	/* __BVIC_PRIO_BITS will be specified when CMSIS is being used. */
