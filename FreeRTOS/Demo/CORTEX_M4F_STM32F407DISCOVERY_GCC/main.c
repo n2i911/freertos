@@ -103,8 +103,10 @@ int main(void)
     vStartLEDFlashTasks( mainFLASH_TASK_PRIORITY );
 
 #define comSTACK_SIZE   128
+#if 0
     /* Start COM Rx/TX echo tasks */
     xTaskCreate( prvUSARTTask, "COMRxTx", comSTACK_SIZE, NULL, mainCOM_TASK_PRIORITY, ( TaskHandle_t * ) NULL );
+#endif
 
     /* Start the scheduler. */
     vTaskStartScheduler();
