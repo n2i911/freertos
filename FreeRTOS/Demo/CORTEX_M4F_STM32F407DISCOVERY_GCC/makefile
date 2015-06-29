@@ -49,7 +49,7 @@ CSRC = main.c \
 	   $(addprefix serial/, serial.c) \
 	   $(addprefix ../../Source/portable/GCC/ARM_CM4F/, port.c) \
 	   $(addprefix ../../Source/portable/MemMang/, heap_2.c) \
-	   $(addprefix app/src/, userbtn.c) \
+	   $(addprefix app/src/, userbtn.c i2c.c) \
 
 ASRC = $(addprefix startup/, startup_stm32f4xx.s)
 

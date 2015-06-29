@@ -28,6 +28,7 @@
 
 /* Application includes */
 #include "userbtn.h"
+#include "i2c.h"
 
 /* Priorities for the demo application tasks. */
 #define mainFLASH_TASK_PRIORITY             ( tskIDLE_PRIORITY + 1UL )
@@ -60,6 +61,9 @@ static void prvSetupHardware( void )
 
     /* Setup the User button function */
     vUserBtnInit();
+
+    /* Setup the I2C1 */
+    vI2cInit();
 }
 
 static xComPortHandle xPort = NULL;
