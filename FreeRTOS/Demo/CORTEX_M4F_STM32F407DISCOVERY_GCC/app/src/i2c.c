@@ -55,7 +55,7 @@ NVIC_InitTypeDef NVIC_InitStructure;
 #endif
 }
 
-void I2C_start( I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction )
+void vI2cStart( I2C_TypeDef* I2Cx, uint8_t uAddress, uint8_t uDirection )
 {
     /* Wait until I2C is not busy */
     while( I2C_GetFlagStatus( I2Cx, I2C_FLAG_BUSY ) );
@@ -70,36 +70,36 @@ void I2C_start( I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction )
      * Send slave Address for write or read
      * The format of address parameter is |A|D|D|R|E|S|S|0|
      */
-    I2C_Send7bitAddress( I2Cx, address, direction );
+    I2C_Send7bitAddress( I2Cx, uAddress, uDirection );
 
     /* Wait for EV6 */
-    if( direction == I2C_Direction_Transmitter )
+    if( uDirection == I2C_Direction_Transmitter )
     {
         while( !I2C_CheckEvent( I2Cx, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED ) );
     }
-    else if( direction == I2C_Direction_Receiver )
+    else if( uDirection == I2C_Direction_Receiver )
     {
         while( !I2C_CheckEvent( I2Cx, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED ) );
     }
 }
 
-void I2C_stop( I2C_TypeDef* I2Cx )
+void vI2cStop( I2C_TypeDef* I2Cx )
 {
     /* Send STOP Condition */
     I2C_GenerateSTOP( I2Cx, ENABLE );
 }
 
-void I2C_write( I2C_TypeDef* I2Cx, uint8_t data )
+void vI2cWrite( I2C_TypeDef* I2Cx, uint8_t uData )
 {
-    I2C_SendData( I2Cx, data );
+    I2C_SendData( I2Cx, uData );
 
     /* Wait for EV8_2 (I2C_EVENT_MASTER_BYTE_TRANSMITTED) */
     while( !I2C_CheckEvent( I2Cx, I2C_EVENT_MASTER_BYTE_TRANSMITTED ) );
 }
 
-uint8_t I2C_read_ack( I2C_TypeDef* I2Cx )
+uint8_t uI2cReadAck( I2C_TypeDef* I2Cx )
 {
-uint8_t data;
+uint8_t uData;
 
     /* Enable acknowledge of recieved data */
     I2C_AcknowledgeConfig( I2Cx, ENABLE );
@@ -108,14 +108,14 @@ uint8_t data;
     while( !I2C_CheckEvent( I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED ) );
 
     /* Read data from I2C data register */
-    data = I2C_ReceiveData( I2Cx );
+    uData = I2C_ReceiveData( I2Cx );
 
-    return data;
+    return uData;
 }
 
-uint8_t I2C_read_nack( I2C_TypeDef* I2Cx )
+uint8_t uI2cReadNack( I2C_TypeDef* I2Cx )
 {
-uint8_t data;
+uint8_t uData;
 
     /*
      * Disable acknowledge of received data
@@ -128,8 +128,8 @@ uint8_t data;
     while( !I2C_CheckEvent( I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED ) );
 
     /* Read data from I2C data register */
-    data = I2C_ReceiveData( I2Cx );
-    return data;
+    uData = I2C_ReceiveData( I2Cx );
+    return uData;
 }
 
 void I2C2_EV_IRQHandler( void )
