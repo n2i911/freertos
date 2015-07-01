@@ -63,7 +63,7 @@ static void prvSetupHardware( void )
     /* Setup the User button function */
     vUserBtnInit();
 
-    /* Setup the I2C1 */
+    /* Setup the I2C2 */
     vI2cInit();
 }
 
