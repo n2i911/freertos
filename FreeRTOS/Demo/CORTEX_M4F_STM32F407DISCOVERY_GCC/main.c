@@ -30,6 +30,7 @@
 #include "userbtn.h"
 #include "i2c.h"
 #include "shell.h"
+#include "spi.h"
 
 /* Priorities for the demo application tasks. */
 #define mainFLASH_TASK_PRIORITY             ( tskIDLE_PRIORITY + 1UL )
@@ -65,6 +66,9 @@ static void prvSetupHardware( void )
 
     /* Setup the I2C2 */
     vI2cInit();
+
+    /* Setup the SPI1 */
+    vSpiInit();
 }
 
 static xComPortHandle xPort = NULL;
