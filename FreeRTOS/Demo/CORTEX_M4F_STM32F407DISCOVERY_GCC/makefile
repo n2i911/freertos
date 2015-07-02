@@ -46,7 +46,7 @@ CSRC = main.c \
 	   $(addprefix ../../Source/, tasks.c queue.c list.c timers.c) \
 	   $(addprefix ../Common/Minimal/, PollQ.c integer.c BlockQ.c semtest.c dynamic.c flash.c) \
 	   $(addprefix ParTest/, ParTest.c) \
-	   $(addprefix serial/, serial.c) \
+	   $(addprefix serial/, serial.c printf-stdarg.c) \
 	   $(addprefix ../../Source/portable/GCC/ARM_CM4F/, port.c) \
 	   $(addprefix ../../Source/portable/MemMang/, heap_2.c) \
 	   $(addprefix app/src/, userbtn.c i2c.c shell.c at24c04.c spi.c lis302dl.c) \
