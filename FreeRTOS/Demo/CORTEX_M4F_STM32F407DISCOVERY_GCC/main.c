@@ -31,6 +31,7 @@
 #include "i2c.h"
 #include "shell.h"
 #include "spi.h"
+#include "lis302dl.h"
 
 /* Priorities for the demo application tasks. */
 #define mainFLASH_TASK_PRIORITY             ( tskIDLE_PRIORITY + 1UL )
@@ -69,6 +70,9 @@ static void prvSetupHardware( void )
 
     /* Setup the SPI1 */
     vSpiInit();
+
+    /* Setup the lis302dl */
+    vLis302dlInit();
 }
 
 static xComPortHandle xPort = NULL;
