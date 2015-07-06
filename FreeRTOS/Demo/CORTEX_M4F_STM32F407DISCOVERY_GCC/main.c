@@ -32,6 +32,7 @@
 #include "shell.h"
 #include "spi.h"
 #include "lis302dl.h"
+#include "mco.h"
 
 /* Priorities for the demo application tasks. */
 #define mainFLASH_TASK_PRIORITY             ( tskIDLE_PRIORITY + 1UL )
@@ -73,6 +74,9 @@ static void prvSetupHardware( void )
 
     /* Setup the lis302dl */
     vLis302dlInit();
+
+    /* Setup MCO1 & MCO2 */
+    vMcoInit();
 }
 
 static xComPortHandle xPort = NULL;
