@@ -26,3 +26,7 @@ PA5  - SPI1_SCK
 PA6  - SPI1_MISO
 PA7  - SPI1_MOSI
 PE3  - CS
+
+/* MCO */
+PA8  - MCO1
+PC9  - MCO2
