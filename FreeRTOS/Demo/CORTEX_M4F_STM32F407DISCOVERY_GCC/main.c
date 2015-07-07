@@ -33,6 +33,7 @@
 #include "spi.h"
 #include "lis302dl.h"
 #include "mco.h"
+#include "pwm.h"
 
 /* Priorities for the demo application tasks. */
 #define mainFLASH_TASK_PRIORITY             ( tskIDLE_PRIORITY + 1UL )
@@ -77,6 +78,9 @@ static void prvSetupHardware( void )
 
     /* Setup MCO1 & MCO2 */
     vMcoInit();
+
+    /* Setup the PWM, this is for servo control */
+    vPwmInit( PWM_PERIOD, PWM_PRESCALER );
 }
 
 static xComPortHandle xPort = NULL;
